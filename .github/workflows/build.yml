@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04  # استخدام Ubuntu 22.04
+    runs-on: ubuntu-20.04  # استخدام Ubuntu 20.04 لحل تعارض git-svn
 
     steps:
       - name: Checkout code
@@ -36,11 +36,11 @@ jobs:
       - name: Install System Dependencies
         run: |
           sudo apt-get update
-          # إزالة مستودع PPA الذي يسبب تثبيت إصدار أحدث من git
+          # إزالة أي مستودع PPA قد يسبب تثبيت إصدار أحدث من git
           sudo add-apt-repository --remove ppa:git-core/ppa || true
           sudo apt-get update
           # تثبيت إصدار متوافق من git مع git-svn
-          sudo apt-get install -y perl libperl-dev cpanminus git=1:2.34.1-1ubuntu1.11 git-svn
+          sudo apt-get install -y perl libperl-dev cpanminus git=1:2.25.1-1ubuntu3 git-svn
           sudo cpanm --force --quiet JSON File::Copy::Recursive File::Spec LWP::UserAgent
           perl -v
 
