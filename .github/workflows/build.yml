@@ -31,7 +31,11 @@ jobs:
       - name: Install System Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y perl libperl-dev cpanminus
+          # إزالة مستودع PPA الذي يسبب تثبيت إصدار أحدث من git
+          sudo add-apt-repository --remove ppa:git-core/ppa || true
+          sudo apt-get update
+          # تثبيت إصدار أقدم من git متوافق مع git-svn
+          sudo apt-get install -y perl libperl-dev cpanminus git=1:2.42.0-1ubuntu1 git-svn
           sudo cpanm --force --quiet JSON File::Copy::Recursive File::Spec LWP::UserAgent
           perl -v
 
