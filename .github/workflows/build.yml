@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04  # استخدام Ubuntu 22.04 لتجنب تعارض إصدار git
+    runs-on: ubuntu-22.04  # استخدام Ubuntu 22.04
 
     steps:
       - name: Checkout code
@@ -28,10 +28,19 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-webkitgtk-perl-
 
+      - name: Check Available Git Versions
+        run: |
+          sudo apt-get update
+          apt-cache madison git  # التحقق من الإصدارات المتوفرة لحزمة git
+
       - name: Install System Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y perl libperl-dev cpanminus git-svn
+          # إزالة مستودع PPA الذي يسبب تثبيت إصدار أحدث من git
+          sudo add-apt-repository --remove ppa:git-core/ppa || true
+          sudo apt-get update
+          # تثبيت إصدار متوافق من git مع git-svn
+          sudo apt-get install -y perl libperl-dev cpanminus git=1:2.34.1-1ubuntu1.11 git-svn
           sudo cpanm --force --quiet JSON File::Copy::Recursive File::Spec LWP::UserAgent
           perl -v
 
