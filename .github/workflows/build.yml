@@ -22,24 +22,18 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            ~/.cmake
-            ~/.ccache
-            ~/webkitgtk-libs
             ~/.cpanm
-          key: ${{ runner.os }}-webkitgtk-${{ hashFiles('Tools/gtk/install-dependencies', 'Tools/Scripts/update-webkitgtk-libs') }}
+            ~/webkitgtk-libs
+          key: ${{ runner.os }}-webkitgtk-perl-${{ hashFiles('Tools/gtk/install-dependencies', 'Tools/Scripts/update-webkitgtk-libs') }}
           restore-keys: |
-            ${{ runner.os }}-webkitgtk-
+            ${{ runner.os }}-webkitgtk-perl-
 
       - name: Install System Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y perl python3 ruby cmake ninja-build gperf \
-                                 libicu-dev libssl-dev libpng-dev libjpeg-dev \
-                                 libxml2-dev libxslt1-dev libgtk-3-dev \
-                                 libwebkit2gtk-4.0-dev
-          # تثبيت Perl ووحداته
-          sudo apt-get install -y libperl-dev cpanminus
-          sudo cpanm --force JSON File::Copy::Recursive  # تثبيت وحدات Perl إذا لزم الأمر
+          sudo apt-get install -y perl libperl-dev cpanminus
+          sudo cpanm --force --quiet JSON File::Copy::Recursive File::Spec LWP::UserAgent
+          perl -v
 
       - name: Install WebKitGTK Dependencies
         run: perl ./Tools/gtk/install-dependencies  # تشغيل سكريبت Perl لتثبيت الـ dependencies
