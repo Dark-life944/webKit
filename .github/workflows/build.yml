@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04  # استخدام Ubuntu 20.04 لحل التعارض git-svn
+    runs-on: ubuntu-20.04  # استخدام Ubuntu 20.04 لحل التعارض git-svn 
 
     steps:
       - name: Checkout code
