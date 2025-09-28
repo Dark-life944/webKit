@@ -1,54 +1,28 @@
-name: Build WebKit with GTK
+name: Build WebKitGTK (Debug)
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04  # استخدام Ubuntu 20.04 لحل التعارض git-svn 
+    runs-on: ubuntu-22.04
 
     steps:
-      - name: Checkout code
+      - name: Checkout source
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 1  # سحب آخر commit فقط لتقليل حجم البيانات
 
-      - name: Cache Dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cpanm
-            ~/webkitgtk-libs
-          key: ${{ runner.os }}-webkitgtk-perl-${{ hashFiles('Tools/gtk/install-dependencies', 'Tools/Scripts/update-webkitgtk-libs') }}
-          restore-keys: |
-            ${{ runner.os }}-webkitgtk-perl-
-
-      - name: Check Available Git Versions
+      - name: Install dependencies
         run: |
           sudo apt-get update
-          apt-cache madison git  # التحقق من الإصدارات المتوفرة لحزمة git
+          sudo apt-get install -y build-essential cmake ninja-build git python3 python3-pip \
+              ruby bison flex gperf libicu-dev libjpeg-dev libpng-dev libwebp-dev \
+              libgtk-3-dev libxslt1-dev libsqlite3-dev libsoup2.4-dev
 
-      - name: Install System Dependencies
-        run: |
-          sudo apt-get update
-          # إزالة أي مستودع PPA قد يسبب تثبيت إصدار أحدث من git
-          sudo add-apt-repository --remove ppa:git-core/ppa || true
-          sudo apt-get update
-          # تثبيت إصدار متوافق من git مع git-svn
-          sudo apt-get install -y perl libperl-dev cpanminus git=1:2.25.1-1ubuntu3 git-svn
-          sudo cpanm --force --quiet JSON File::Copy::Recursive File::Spec LWP::UserAgent
-          perl -v
+      - name: Run WebKitGTK dependency installer
+        run: Tools/gtk/install-dependencies
 
-      - name: Install WebKitGTK Dependencies
-        run: perl ./Tools/gtk/install-dependencies  # تشغيل سكريبت Perl لتثبيت الـ dependencies
+      - name: Update WebKitGTK libs
+        run: Tools/Scripts/update-webkitgtk-libs
 
-      - name: Update WebKitGTK Libraries
-        run: perl ./Tools/Scripts/update-webkitgtk-libs  # تشغيل سكريبت Perl لتحديث المكتبات
-
-      - name: Build WebKit (GTK, Debug)
-        run: perl ./Tools/Scripts/build-webkit --gtk --debug  # تشغيل سكريبت Perl لبناء WebKit
+      - name: Build WebKitGTK Debug
+        run: Tools/Scripts/build-webkit --gtk --debug
