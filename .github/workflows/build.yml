@@ -11,12 +11,23 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Install dependencies
+      - name: Fix broken dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential cmake ninja-build git python3 python3-pip \
-              ruby bison flex gperf libicu-dev libjpeg-dev libpng-dev libwebp-dev \
-              libgtk-3-dev libxslt1-dev libsqlite3-dev libsoup2.4-dev
+          # تثبيت الحزمة الناقصة
+          sudo apt-get install -y libunwind-dev
+          # إزالة git-svn لأنه يعمل تضارب مع نسخة git الحديثة
+          sudo apt-get remove -y git-svn || true
+
+      - name: Install build essentials
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential cmake ninja-build git python3 python3-pip \
+            ruby bison flex gperf libicu-dev libjpeg-dev libpng-dev libwebp-dev \
+            libgtk-3-dev libxslt1-dev libsqlite3-dev libsoup2.4-dev \
+            libssl-dev libegl1-mesa-dev libgbm-dev librsvg2-dev \
+            libpango1.0-dev libatk1.0-dev libepoxy-dev
 
       - name: Run WebKitGTK dependency installer
         run: Tools/gtk/install-dependencies
