@@ -46,7 +46,8 @@ jobs:
             libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
             libsoup2.4-dev libenchant-2-dev liblzma-dev zlib1g-dev \
             ruby bison flex clang \
-            libtasn1-6 libtasn1-6-dev
+            libtasn1-6 libtasn1-6-dev \
+            libgtk-4-dev libgtk-4-bin libgtk-4-common libgtk-4-1 libgtk-4-doc libgtk-4-devtools
 
       - name: Use Clang instead of GCC
         run: |
