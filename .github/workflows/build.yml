@@ -45,7 +45,8 @@ jobs:
             gstreamer1.0-tools gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-libav \
             libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
             libsoup2.4-dev libenchant-2-dev liblzma-dev zlib1g-dev \
-            ruby bison flex clang
+            ruby bison flex clang \
+            libtasn1-6 libtasn1-6-dev
 
       - name: Use Clang instead of GCC
         run: |
