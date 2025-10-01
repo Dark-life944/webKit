@@ -71,4 +71,15 @@ jobs:
           sudo make install
 
       - name: Build WebKitGTK Debug
-        run: Tools/Scripts/build-webkit --gtk --debug --cmakeargs="-DUSE_JPEGXL=OFF -DENABLE_WEBXR=OFF -DUSE_THUNDER=OFF -DENABLE_THUNDER=OFF -DENABLE_RDK=OFF -Wno-unknown-warning-option -Wno-error"
+        run: Tools/Scripts/build-webkit --gtk --debug --cmakeargs="\
+    -DUSE_JPEGXL=OFF \
+    -DENABLE_WEBXR=OFF \
+    -DUSE_THUNDER=OFF \
+    -DENABLE_THUNDER=OFF \
+    -DENABLE_RDK=OFF \
+    -DCMAKE_CXX_STANDARD=20 \
+    -DCMAKE_CXX_EXTENSIONS=OFF \
+    -DUSE_EXPERIMENTAL_CXX=OFF \
+    -DUSE_STD_VARIANT=OFF \
+    -DCMAKE_C_FLAGS=-Wno-unknown-warning-option \
+    -DCMAKE_CXX_FLAGS='-std=c++20 -Wno-unknown-warning-option -Wno-error'"
