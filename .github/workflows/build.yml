@@ -50,7 +50,7 @@ jobs:
             libgcrypt20-dev libenchant-2-dev \
             sqlite3 libsqlite3-dev subversion perl ruby \
             fonts-comfortaa language-pack-en \
-             ncdu p7zip-full p7zip-rar curl unzip libjxl-dev
+            ncdu p7zip-full p7zip-rar curl unzip
 
       - name: Use Clang instead of GCC
         run: |
@@ -60,4 +60,4 @@ jobs:
           c++ --version
 
       - name: Build WebKitGTK Debug
-        run: Tools/Scripts/build-webkit --gtk --debug
+        run: Tools/Scripts/build-webkit --gtk --debug --cmakeargs="-DUSE_JPEGXL=OFF"
