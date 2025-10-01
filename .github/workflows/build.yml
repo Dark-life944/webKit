@@ -60,4 +60,4 @@ jobs:
           c++ --version
 
       - name: Build WebKitGTK Debug
-        run: Tools/Scripts/build-webkit --gtk --debug --cmakeargs="-DUSE_JPEGXL=OFF"
+        run: Tools/Scripts/build-webkit --gtk --debug --cmakeargs="-DUSE_JPEGXL=OFF -DENABLE_WEBXR=OFF"
