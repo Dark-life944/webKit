@@ -14,7 +14,7 @@ jobs:
       - name: Prepare dummy git-svn
         run: |
           sudo apt-get update
-          sudo apt-get install -y equivs
+          sudo apt-get install -y libunwind-dev equivs
           cat <<EOF > git-svn-dummy
           Section: misc
           Priority: optional
